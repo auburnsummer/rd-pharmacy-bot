@@ -8,3 +8,5 @@ app.get('/', (req:any, res:any) => {
 app.listen(8000, () => {
     console.log("Listening to port 8000.");
 });
+
+require('./bot.js');

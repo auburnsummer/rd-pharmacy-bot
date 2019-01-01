@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^10.12.18",
     "discord.js": "^11.4.2",
     "express": "^4.16.4"
   }

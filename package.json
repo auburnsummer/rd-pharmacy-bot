@@ -16,7 +16,9 @@
     "dotenv": "^6.2.0",
     "erlpack": "github:hammerandchisel/erlpack",
     "express": "^4.16.4",
-    "uws": "^99.0.0"
+    "fuse.js": "^3.3.0",
+    "uws": "^99.0.0",
+    "xregexp": "^4.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.16.0"

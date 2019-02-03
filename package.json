@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prestart": "tsc",
-    "start": "node -r dotenv/config built/server.js"
+    "start": "node -r dotenv/config src/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/firestore": "^0.19.0",
     "@types/node": "^10.12.18",
+    "bluebird": "^3.5.3",
     "discord.js": "^11.4.2",
     "dotenv": "^6.2.0",
     "erlpack": "github:hammerandchisel/erlpack",

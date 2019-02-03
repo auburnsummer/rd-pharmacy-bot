@@ -79,3 +79,5 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 built/
+
+access_secret.json

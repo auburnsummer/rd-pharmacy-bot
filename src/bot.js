@@ -7,8 +7,11 @@ client.on('ready', () => {
     console.log("Ready.");
 })
 
-client.on('message', (message:any) => {
-    router.routeText(message);
+client.on('message', (message) => {
+    router.routeText(message)
+    .catch( (err) => {
+        console.log(err);
+    })
 });
 
 client.login(process.env.DISCORD_BOT_TOKEN);

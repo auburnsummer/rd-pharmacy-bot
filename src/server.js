@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
+var Promise = require('bluebird');
 
-app.get('/', (req:any, res:any) => {
+app.get('/', (req, res) => {
     res.send("Hello World!");
 });
 

@@ -5,11 +5,14 @@ let textRoutes = [
     }
 ]
 
-module.exports.routeText = (message:any) => {
+module.exports.routeText = (message) => {
     for (let route of textRoutes) {
         let result = route.match.exec(message.content)
         if (result) {
-            return route.action(message, result);
+            let response = route.action(message, result);
+            return response;
         }
     }
+    // If there are no matches:
+    return Promise.resolve("No matches.");
 }

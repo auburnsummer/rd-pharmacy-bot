@@ -12,6 +12,7 @@
   "dependencies": {
     "@google-cloud/firestore": "^0.19.0",
     "@types/node": "^10.12.18",
+    "big.js": "^5.2.2",
     "bluebird": "^3.5.3",
     "discord.js": "^11.4.2",
     "dotenv": "^6.2.0",

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 const client = require('./discord/client_singleton.js');
-const router = require('./message_router.js');
+const router = require('./discord_router.js');
 
 client.on('ready', () => {
     console.log("Ready.");

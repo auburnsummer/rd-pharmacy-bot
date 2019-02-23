@@ -6,6 +6,10 @@ action: what we actually do.
 filters: the requirements needed for this message to go through.
 */
 
+const config = require('./config.js');
+
+const MODERATOR_ROLES = config.MODERATOR_ROLES;
+
 let textRoutes = [
     { // b!daily
         match: /(?:^b!daily)|(\[b!daily\])/,
@@ -25,11 +29,22 @@ let textRoutes = [
         match: /^b@timeset ?(\d*)/,
         action: require('./actions/blend_timeset.js'),
         filters: [
-            require('./filters/hasAnyOfTheseRoles.js')(["396824570604027904"])
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
     { // b@daily
         match: /^b@daily ?(.*)/,
+        action: require('./actions/blend_moddaily.js'),
+        filters: [
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    },
+    { // b@set
+        match: /^b@set +(.+) +(\d+)/,
+        action: require('./actions/blend_modset.js'),
+        filters: [
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
     }
 ]
 

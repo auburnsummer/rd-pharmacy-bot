@@ -8,20 +8,21 @@ const COLLECTION_NAME = "dailyblend";
 let E = module.exports = {};
 
 // Get an user, where we already assume they exist. Returns false if they don't exist.
+// Returns a DocumentSnapshot
 E.getExistingUser = (userID) => {
     let collection = fyre.collection(COLLECTION_NAME);
     let query = collection.where("id", "==", userID);
     return query.get()
     .then( (data) => {
         if (data.docs.length > 0) {
-            return data.docs[0].data();
+            return data.docs[0];
         } else {
             return false;
         }
     })
 }
 
-// creates a new user.
+// creates a new user. Returns a DocumentSnapshot
 E.createNewUser = (userID) => {
     let collection = fyre.collection(COLLECTION_NAME);
     return collection.add({
@@ -33,23 +34,12 @@ E.createNewUser = (userID) => {
         return docRef.get()
     })
     .then( (doc) => {
-        console.log(doc);
-        return doc.data();
-    })
-}
-
-E.updateUser = (userID, newData) => {
-    let collection = fyre.collection(COLLECTION_NAME);
-    let query = collection.where("id", "==", userID);
-    return query.get()
-    .then( (data) => {
-        console.log(data.docs[0]);
-        return data.docs[0].ref.update(newData);
+        return doc;
     })
 }
 
 // gets a user. makes their data if it doesn't exist yet.
-// usually, you'll use this one.
+// usually, you'll use this one. Returns a DocumentSnapshot
 E.getUser = (userID) => {
     return E.getExistingUser(userID)
     .then ( (doc) => {
@@ -61,10 +51,19 @@ E.getUser = (userID) => {
     })
 }
 
+// Updates a user with new data.
+E.updateUser = (userID, newData) => {
+    let user = E.getUser(userID);
+    return user
+    .then( (snapshot) => {
+        return snapshot.ref.update(newData);
+    })
+}
+
 E.lastBlendTime = () =>  {
     return E.getExistingUser("METADATA")
-    .then ( (data) => {
-        return data.blendTimestamp;
+    .then ( (snapshot) => {
+        return snapshot.data().blendTimestamp;
     })
 }
 
@@ -72,19 +71,19 @@ E.setBlendTime = (newTime) => {
     return E.updateUser("METADATA", {blendTimestamp: newTime});
 }
 
-E.drink = async (userID, timestampOfPost) => {
+E.drink = async (userID, timestampOfPost, bypassCheck=false) => {
     let arr = await Promise.all([E.lastBlendTime(), E.getUser(userID)]);
     let lastBlend = arr[0];
     let user = arr[1];
-    let lastDrink = user.lastDrinkTimestamp;
+    let lastDrink = user.data().lastDrinkTimestamp;
     // the timestamp they drank needs to be BEFORE the timestamp the blend was posted
     // or in other words, if they've drank AFTER the blend timestamp, they've already drank today!
-    if (lastDrink > lastBlend) {
+    if (lastDrink > lastBlend && bypassCheck == false) {
         return Promise.resolve(false);
     }
     // otherwise, they're good to drink!
     let newData = {
-        count: user.count + 1,
+        count: user.data().count + 1,
         lastDrinkTimestamp: timestampOfPost,
     }
     return E.updateUser(userID, newData);

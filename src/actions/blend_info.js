@@ -4,6 +4,17 @@ An action that handles the b!info command.
 
 const userSearch = require('../discord/userSearch.js');
 const blends = require('../gcp/blends.js');
+const dutils = require('../discord/utils');
+
+const { Client, RichEmbed } = require('discord.js');
+
+let genField = (score, threshold) => {
+    let s = `${score}/${threshold}`
+    if (score >= threshold) {
+        s += ":coffee:"
+    }
+    return s
+}
 
 module.exports = async (message, results) => {
     console.log(results[1]);
@@ -16,7 +27,17 @@ module.exports = async (message, results) => {
     }
     if (result) {
         let user = await blends.getUser(result.user.id);
-        message.channel.send(`Score: ${user.count}, timestamp: ${user.lastDrinkTimestamp}`);
+        let userData = user.data();
+        console.log(userData);
+        embed = new RichEmbed()
+            .setColor(result.displayColor)
+            .setAuthor(`Daily Blend Info: ${dutils.assumedName(result)}`, result.user.displayAvatarURL)
+            .setFooter(`Timestamp of last drink: ${userData.lastDrinkTimestamp}`)
+            .setTimestamp()
+            .addField("Count", `${userData.count}`, false)
+            .addField("Visitor Progress", genField(userData.count, 10), true)
+            .addField("Regular Progress", genField(userData.count, 30), true);
+        message.channel.send(embed);
     } else {
         message.channel.send("I couldn't find a user by that name.");
     }

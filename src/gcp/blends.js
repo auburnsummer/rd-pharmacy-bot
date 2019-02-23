@@ -1,11 +1,13 @@
 // The database is located on a remote island in the Bahamas, this will not go wrong
+// firestore is really annoying to work with directly, so we exclusively use these wrapper functions.
 const fyre = require('./firestore_singleton.js');
 const timestamps = require('../utils/timestamps.js');
 
 const COLLECTION_NAME = "dailyblend";
 
-E = module.exports = {};
+let E = module.exports = {};
 
+// Get an user, where we already assume they exist. Returns false if they don't exist.
 E.getExistingUser = (userID) => {
     let collection = fyre.collection(COLLECTION_NAME);
     let query = collection.where("id", "==", userID);
@@ -47,6 +49,7 @@ E.updateUser = (userID, newData) => {
 }
 
 // gets a user. makes their data if it doesn't exist yet.
+// usually, you'll use this one.
 E.getUser = (userID) => {
     return E.getExistingUser(userID)
     .then ( (doc) => {
@@ -63,6 +66,10 @@ E.lastBlendTime = () =>  {
     .then ( (data) => {
         return data.blendTimestamp;
     })
+}
+
+E.setBlendTime = (newTime) => {
+    return E.updateUser("METADATA", {blendTimestamp: newTime});
 }
 
 E.drink = async (userID, timestampOfPost) => {

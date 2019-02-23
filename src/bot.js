@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const client = new Discord.Client();
+const client = require('./discord/client_singleton.js');
 const router = require('./message_router.js');
 
 client.on('ready', () => {
@@ -13,5 +13,3 @@ client.on('message', (message) => {
         console.log(err);
     })
 });
-
-client.login(process.env.DISCORD_BOT_TOKEN);

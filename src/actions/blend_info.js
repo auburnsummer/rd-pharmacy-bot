@@ -5,6 +5,7 @@ An action that handles the b!info command.
 const userSearch = require('../discord/userSearch.js');
 const blends = require('../gcp/blends.js');
 const dutils = require('../discord/utils');
+const roles = require('../discord/give_roles.js');
 
 const { Client, RichEmbed } = require('discord.js');
 
@@ -37,7 +38,10 @@ module.exports = async (message, results) => {
             .addField("Count", `${userData.count}`, false)
             .addField("Visitor Progress", genField(userData.count, 10), true)
             .addField("Regular Progress", genField(userData.count, 30), true);
-        message.channel.send(embed);
+        return Promise.all([
+            message.channel.send(embed),
+            roles.checkAndGiveRoles(result)
+        ]);
     } else {
         message.channel.send("I couldn't find a user by that name.");
     }

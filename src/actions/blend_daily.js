@@ -4,6 +4,7 @@ An action that handles the b!daily command.
 
 const blends = require('../gcp/blends.js');
 const dutils = require('../discord/utils.js');
+const roles = require('../discord/give_roles.js');
 
 module.exports = async (message, results) => {
     let result = await blends.drink(message.author.id, message.createdTimestamp);
@@ -20,5 +21,8 @@ let failureMessage = async (message) => {
 }
 
 let successMessage = async (message) => {
-    return message.react("☕");
+    return Promise.all([
+        message.react("☕"),
+        roles.checkAndGiveRoles(message.member)
+    ]);
 }

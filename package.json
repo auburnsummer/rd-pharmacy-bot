@@ -16,7 +16,6 @@
     "bluebird": "^3.5.3",
     "discord.js": "^11.4.2",
     "dotenv": "^6.2.0",
-    "erlpack": "github:hammerandchisel/erlpack",
     "express": "^4.16.4",
     "fuse.js": "^3.3.0",
     "uws": "^99.0.0",

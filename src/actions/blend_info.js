@@ -33,8 +33,7 @@ module.exports = async (message, results) => {
         embed = new RichEmbed()
             .setColor(result.displayColor)
             .setAuthor(`Daily Blend Info: ${dutils.assumedName(result)}`, result.user.displayAvatarURL)
-            .setFooter(`Timestamp of last drink: ${userData.lastDrinkTimestamp}`)
-            .setTimestamp()
+            .setTimestamp(null)
             .addField("Count", `${userData.count}`, false)
             .addField("Visitor Progress", genField(userData.count, 10), true)
             .addField("Regular Progress", genField(userData.count, 30), true);

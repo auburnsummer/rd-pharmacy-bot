@@ -11,41 +11,75 @@ const config = require('./config.js');
 const MODERATOR_ROLES = config.MODERATOR_ROLES;
 
 let textRoutes = [
-    { // b!daily
+    { // b!version
+        match: /^b!version/,
+        action: require('./actions/blend_version.js'),
+        filters: [
+            require('./filters/isBot.js')(false)
+        ]
+    },
+    { // b!help
+        match: /^b!help ?(.*)/,
+        action: require('./actions/blend_help.js'),
+        filters: [
+            require('./filters/isBot.js')(false)
+        ]
+    },
+    { // b!daily or [b!daily]
         match: /(?:^b!daily)|(\[b!daily\])/,
         action: require('./actions/blend_daily.js'),
         filters: [
             require('./filters/isBot.js')(false)
         ]
     },
-    { // b!info
+    { // b!info <user?>
         match: /^b!info ?(.*)/,
         action: require('./actions/blend_info.js'),
         filters: [
             require('./filters/isBot.js')(false)
         ]
     },
-    { // b@timeset
-        match: /^b@timeset ?(\d*)/,
+    { // b@blendtime <time?>
+        match: /^b@blendtime ?(\d*)/,
         action: require('./actions/blend_timeset.js'),
         filters: [
-            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+            require('./filters/or.js')([
+                require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES),
+                require('./filters/isWebhook.js')(true)
+            ])
         ]
     },
-    { // b@daily
-        match: /^b@daily ?(.*)/,
+    { // b@daily <username>
+        match: /^b@daily (.+)/,
         action: require('./actions/blend_moddaily.js'),
         filters: [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
-    { // b@set
+    { // b@set <username> <value>
         match: /^b@set +(.+) +(\d+)/,
         action: require('./actions/blend_modset.js'),
         filters: [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
-    }
+    },
+    { // b@timestamp <username> <stamp>
+        match: /^b@timestamp ?(.+?) (\d+)/,
+        action: require('./actions/blend_timestamp.js'),
+        filters: [
+            require('./filters/isBot.js')(false),
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    },
+    { // b@timestamp <username>
+        match: /^b@timestamp ?(.*)/,
+        action: require('./actions/blend_timestamp.js'),
+        filters: [
+            require('./filters/isBot.js')(false),
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    },
+
 ]
 
 module.exports.routeText = async (message) => {

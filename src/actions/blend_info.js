@@ -9,6 +9,17 @@ const roles = require('../discord/give_roles.js');
 
 const { Client, RichEmbed } = require('discord.js');
 
+const ZERO_COFFEE_IMAGE = "https://cdn.discordapp.com/attachments/409492674576384000/554105296910548992/barista_bot_images_1.png";
+const TEN_TO_NINETEEN_COFFEE_IMAGE = "https://cdn.discordapp.com/attachments/409492674576384000/554814030473199633/barista_bot_images_3.png";
+
+const getImage = (score) => {
+    if (score > 0) {
+        return TEN_TO_NINETEEN_COFFEE_IMAGE;
+    } else {
+        return ZERO_COFFEE_IMAGE;
+    }
+}
+
 let genField = (score, threshold) => {
     let s = `${score}/${threshold}`
     if (score >= threshold) {
@@ -19,7 +30,7 @@ let genField = (score, threshold) => {
 
 module.exports = async (message, results) => {
     console.log(results[1]);
-    let result
+    let result;
 
     if (results[1]) {
         result = await userSearch.search(message.guild, results[1]);
@@ -36,7 +47,8 @@ module.exports = async (message, results) => {
             .setTimestamp(null)
             .addField("Count", `${userData.count}`, false)
             .addField("Visitor Progress", genField(userData.count, 10), true)
-            .addField("Regular Progress", genField(userData.count, 30), true);
+            .addField("Regular Progress", genField(userData.count, 30), true)
+            .setImage(getImage(userData.count));
         return Promise.all([
             message.channel.send(embed),
             roles.checkAndGiveRoles(result)

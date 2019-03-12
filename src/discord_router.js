@@ -15,34 +15,46 @@ let textRoutes = [
         match: /^b!version/,
         action: require('./actions/blend_version.js'),
         filters: [
-            require('./filters/isBot.js')(false)
+            require('./filters/isBot.js')(false),
+            require('./filters/isInAnyOfTheseChannels')([config.BLEND_CHANNEL])
         ]
     },
     { // b!help
         match: /^b!help ?(.*)/,
         action: require('./actions/blend_help.js'),
         filters: [
-            require('./filters/isBot.js')(false)
+            require('./filters/isBot.js')(false),
+            require('./filters/isInAnyOfTheseChannels')([config.BLEND_CHANNEL])
+        ]
+    },
+    { // b@help
+        match: /^b@help ?(.*)/,
+        action: require('./actions/blend_modhelp.js'),
+        filters: [
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES),
         ]
     },
     { // b!daily or [b!daily]
         match: /(?:^b!daily)|(\[b!daily\])/,
         action: require('./actions/blend_daily.js'),
         filters: [
-            require('./filters/isBot.js')(false)
+            require('./filters/isBot.js')(false),
+            require('./filters/isInAnyOfTheseChannels')([config.BLEND_CHANNEL])
         ]
     },
     { // b!info <user?>
         match: /^b!info ?(.*)/,
         action: require('./actions/blend_info.js'),
         filters: [
-            require('./filters/isBot.js')(false)
+            require('./filters/isBot.js')(false),
+            require('./filters/isInAnyOfTheseChannels')([config.BLEND_CHANNEL])
         ]
     },
     { // b@blendtime <time?>
         match: /^b@blendtime ?(\d*)/,
         action: require('./actions/blend_timeset.js'),
         filters: [
+            // this command can be triggered via a webhook (so that the google sheet can reset the date)
             require('./filters/or.js')([
                 require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES),
                 require('./filters/isWebhook.js')(true)

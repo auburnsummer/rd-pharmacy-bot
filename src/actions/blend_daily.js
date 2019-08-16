@@ -20,6 +20,7 @@ let failureMessage = async (message) => {
     return message.channel.send(`☕ | **${assumedName}**, you've already blended today!`);
 }
 
+// success message is: react to their post with coffee
 let successMessage = async (message) => {
     return Promise.all([
         message.react("☕"),

@@ -91,6 +91,14 @@ let textRoutes = [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
+    { // rdzip@inspect <url> [json]
+        match: /^rdzip@inspect +(.+?) ?(json)?$/,
+        action: require('./actions/rdzip_inspect.js'),
+        filters: [
+            require('./filters/isBot.js')(false),
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    }
 
 ]
 

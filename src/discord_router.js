@@ -91,12 +91,38 @@ let textRoutes = [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
+    {
+        // rdzip!optout / rdzip!optin
+        match: /^rdzip!opt((out)|(in))/ ,
+        action: require('./actions/rdzip_optout.js'),
+        filters: [
+            require('./filters/isBot')(false)
+        ]
+    },
     { // rdzip@inspect <url> [json]
         match: /^rdzip@inspect +(.+?) ?(json)?$/,
         action: require('./actions/rdzip_inspect.js'),
         filters: [
             require('./filters/isBot.js')(false),
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    },
+    { // rdzip@add <url>
+        match: /^rdzip@add (.+)/,
+        action: require('./actions/rdzip_add.js'),
+        filters: [
+            require('./filters/isBot.js')(false),
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    },
+    { // submission.
+        match: /[\w\W]*/, // everything
+        action: require('./actions/rdzip_filesubmission'),
+        filters: [
+            require('./filters/hasAFileAttachedWithThisExtension')('.rdzip'),
+            require('./filters/isBot')(false),
+            require('./filters/isInAnyOfTheseChannels')([config.SHOWCASE_CHANNEL]),
+            require('./filters/isOptedInToTheSpreadsheet')
         ]
     }
 
@@ -109,6 +135,7 @@ module.exports.routeText = async (message) => {
         if (result) {
             // execute all the filters asynchronously.
             let filters = route.filters.map( (fn) => fn(message) );
+            // todo: immediately continue if any of the promises fail?
             let filter_results = await Promise.all(filters);
             // They all need to return true for us to go through.
             if (filter_results.every((x) => x)) {

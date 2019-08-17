@@ -5,7 +5,6 @@ const router = require('./discord_router.js');
 
 client.on('ready', () => {
     console.log("Ready.");
-    client.user.setStatus(`invisible`);
 })
 
 client.on('message', (message) => {

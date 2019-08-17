@@ -79,7 +79,7 @@ E.makeInternFromRdlevel = async (rdobj, preview_img, download_url, last_updated)
     final.artist = rdobj.settings.artist;
     final.author = rdobj.settings.author;
     final.description = rdobj.settings.description;
-    final.difficulty = 5;
+    final.difficulty = " "; // temporary
     final.tags = rdobj.settings.tags.split(',').map( (s) => {return s.trim()} );
     final.single_player = ["OnePlayerOnly", "BothModes"].includes(rdobj.settings.canBePlayedOn)
     final.two_player = ["TwoPlayerOnly", "BothModes"].includes(rdobj.settings.canBePlayedOn)

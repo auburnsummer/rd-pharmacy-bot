@@ -94,7 +94,7 @@ E.makeInternFromRdlevel = async (rdobj, preview_img, download_url, last_updated)
     final.description = rdobj.settings.description;
     let bpms = findBPMs(rdobj);
     final.max_bpm = Math.max(...bpms);
-    final.min_bpm = Math.max(...bpms);
+    final.min_bpm = Math.min(...bpms);
     final.difficulty = " "; // temporary
     final.tags = rdobj.settings.tags.split(',').map( (s) => {return s.trim()} );
     final.single_player = ["OnePlayerOnly", "BothModes"].includes(rdobj.settings.canBePlayedOn)

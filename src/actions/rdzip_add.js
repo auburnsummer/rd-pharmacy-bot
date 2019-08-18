@@ -11,8 +11,9 @@ module.exports = async (message, results) => {
     } catch (error) {
         return message.channel.send(error);
     }
+    console.log(level);
     try {
-        rdsheet.addLevel(level);
+        await rdsheet.addLevel(level);
     } catch (error) {
         return message.channel.send("Error uploading to sheet : " + error);
     }

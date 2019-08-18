@@ -13,3 +13,5 @@ client.on('message', (message) => {
         console.log(err);
     })
 });
+
+client.on('error', console.error);

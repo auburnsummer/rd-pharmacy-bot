@@ -16,8 +16,8 @@ module.exports = async (message, results) => {
     await blends.updateUser(message.author.id, {rdzip_consent: toggle});
     if (toggle) {
         // opted in.
-        return message.channel.send(`💁 | **${d_utils.assumedName(message.member)}**, ${OPT_IN_MESSAGE}`);
+        return message.channel.send(`<:groovy:437835303441661972> | **${d_utils.assumedName(message.member)}**, ${OPT_IN_MESSAGE}`);
     } else {
-        return message.channel.send(`💁 | **${d_utils.assumedName(message.member)}**, ${OPT_OUT_MESSAGE}`);
+        return message.channel.send(`<:tired:436375084702236683> | **${d_utils.assumedName(message.member)}**, ${OPT_OUT_MESSAGE}`);
     }
 }

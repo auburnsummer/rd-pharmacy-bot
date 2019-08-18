@@ -17,7 +17,7 @@ const unlink_p = Promise.promisify(fs.unlink);
 
 const jszip = require('jszip');
 
-const dirty_json = require('dirty-json');
+const JSON5 = require('json5');
 
 const uuidv4 = require('uuid/v4');
 
@@ -52,7 +52,7 @@ E.makeInternFromURL = async (url) => {
     let obj;
     // Extract relevant information from the rdlevel file.
     try {
-        obj = dirty_json.parse(rdlevel.trim());
+        obj = JSON5.parse(rdlevel.trim());
     } catch (error) {
         return Promise.reject("JSON5 error. The main.rdlevel might be malformed." + error);
     }
@@ -70,6 +70,19 @@ E.getPreviewImage = (rdobj) => {
     return rdobj.settings.previewImage;
 }
 
+findBPMs = (rdobj) => {
+    let bpms = [];
+    for (e of rdobj.events) {
+        if (e.type === 'PlaySong') {
+            bpms.push(e.bpm);
+        }
+        if (e.type === 'SetBeatsPerMinute') {
+            bpms.push(e.beatsPerMinute)
+        }
+    }
+    return bpms;
+}
+
 // from a json5 parsed object
 E.makeInternFromRdlevel = async (rdobj, preview_img, download_url, last_updated) => {
     let final = {}
@@ -79,6 +92,9 @@ E.makeInternFromRdlevel = async (rdobj, preview_img, download_url, last_updated)
     final.artist = rdobj.settings.artist;
     final.author = rdobj.settings.author;
     final.description = rdobj.settings.description;
+    let bpms = findBPMs(rdobj);
+    final.max_bpm = Math.max(...bpms);
+    final.min_bpm = Math.max(...bpms);
     final.difficulty = " "; // temporary
     final.tags = rdobj.settings.tags.split(',').map( (s) => {return s.trim()} );
     final.single_player = ["OnePlayerOnly", "BothModes"].includes(rdobj.settings.canBePlayedOn)

@@ -1,7 +1,7 @@
 E = module.exports = {};
 
 if (process.argv[2]) { // DEBUG
-    E.LOGGING_CHANNEL = '545120636603990027';
+    E.LOGGING_CHANNEL = '543036200982937610';
     E.MODERATOR_ROLES = [
         "396824570604027904", 
         "298306453473853452",

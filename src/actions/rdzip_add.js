@@ -18,7 +18,7 @@ module.exports = async (message, results) => {
         return message.channel.send("Error uploading to sheet : " + error);
     }
     return Promise.all([
-        request.get(process.env.SPREADSHEET_PING_URL),
+        request.post(process.env.SPREADSHEET_PING_URL),
         message.react('✅')
     ]);
 }

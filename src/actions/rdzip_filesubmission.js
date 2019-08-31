@@ -7,6 +7,9 @@ const rdsheet = require('../sheets/sheet_json.js');
 const Promise = require('bluebird');
 const request = require('request-promise');
 
+const client = require('../discord/client_singleton.js');
+
+const config = require('../config.js');
 
 module.exports = async (message, results) => {
     console.log("FILE SUBMISSION");
@@ -21,15 +24,21 @@ module.exports = async (message, results) => {
     try {
         level = await sugar.makeInternFromURL(url);
     } catch (error) {
-        return message.channel.send(error);
+        let channel = client.channels.get(config.LOGGING_CHANNEL)
+        if (channel) {
+            return channel.send("Error parsing rdzip : " + error);
+        }
     }
     try {
         await rdsheet.addLevel(level);
     } catch (error) {
-        return message.channel.send("Error uploading to sheet : " + error);
+        let channel = client.channels.get(config.LOGGING_CHANNEL)
+        if (channel) {
+            return channel.send("Error uploading to sheet : " + error);
+        }
     }
     return Promise.all([
-        request.get(process.env.SPREADSHEET_PING_URL),
+        request.post(process.env.SPREADSHEET_PING_URL),
         message.react('✅')
     ]);
 }

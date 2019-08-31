@@ -46,7 +46,7 @@ E.makeInternFromURL = async (url) => {
         rdlevel = await rdlevel_file.async('string');
     } catch (error) {
         console.log(error);
-        return Promise.reject("Zip error. Is this a rdzip?");
+        return Promise.reject("Zip error. Is this a rdzip? | " + error);
     }
 
     let obj;
@@ -54,7 +54,7 @@ E.makeInternFromURL = async (url) => {
     try {
         obj = JSON5.parse(rdlevel.trim());
     } catch (error) {
-        return Promise.reject("JSON5 error. The main.rdlevel might be malformed." + error);
+        return Promise.reject("JSON5 error. The main.rdlevel might be malformed. | " + error);
     }
 
     let preview_img = E.getPreviewImage(obj);
@@ -83,6 +83,10 @@ findBPMs = (rdobj) => {
     return bpms;
 }
 
+let defaultUndefined = (test, defaultValue) => {
+    return (test === undefined) ? defaultValue : test;
+}
+
 // from a json5 parsed object
 E.makeInternFromRdlevel = async (rdobj, preview_img, download_url, last_updated) => {
     let final = {}
@@ -95,7 +99,8 @@ E.makeInternFromRdlevel = async (rdobj, preview_img, download_url, last_updated)
     let bpms = findBPMs(rdobj);
     final.max_bpm = Math.max(...bpms);
     final.min_bpm = Math.min(...bpms);
-    final.difficulty = " "; // temporary
+    final.difficulty = defaultUndefined(rdobj.settings.difficulty, "Medium");
+    final.seizure_warning = defaultUndefined(rdobj.settings.seizureWarning, false);
     final.tags = rdobj.settings.tags.split(',').map( (s) => {return s.trim()} );
     final.single_player = ["OnePlayerOnly", "BothModes"].includes(rdobj.settings.canBePlayedOn)
     final.two_player = ["TwoPlayerOnly", "BothModes"].includes(rdobj.settings.canBePlayedOn)

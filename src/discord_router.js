@@ -122,7 +122,7 @@ let textRoutes = [
             require('./filters/hasAFileAttachedWithThisExtension')('.rdzip'),
             require('./filters/isBot')(false),
             require('./filters/isInAnyOfTheseChannels')([config.SHOWCASE_CHANNEL]),
-            require('./filters/isOptedInToTheSpreadsheet')
+            require('./filters/isOptedInToTheSpreadsheet')(true)
         ]
     }
 

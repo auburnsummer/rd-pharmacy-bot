@@ -92,6 +92,14 @@ let textRoutes = [
         ]
     },
     {
+        // rdzip!version
+        match: /^rdzip!version/,
+        action: require('./actions/rdzip_version.js'),
+        filters: [
+            require('./filters/isBot.js')(false)
+        ]
+    },
+    {
         // rdzip!optout / rdzip!optin
         match: /^rdzip!opt((out)|(in))/ ,
         action: require('./actions/rdzip_optout.js'),

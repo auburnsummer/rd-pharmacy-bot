@@ -27,8 +27,8 @@ let textRoutes = [
             require('./filters/isInAnyOfTheseChannels')([config.BLEND_CHANNEL])
         ]
     },
-    { // b@help
-        match: /^b@help ?(.*)/,
+    { // b^help
+        match: /^b\^help ?(.*)/,
         action: require('./actions/blend_modhelp.js'),
         filters: [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES),
@@ -50,8 +50,8 @@ let textRoutes = [
             require('./filters/isInAnyOfTheseChannels')([config.BLEND_CHANNEL])
         ]
     },
-    { // b@blendtime <time?>
-        match: /^b@blendtime ?(\d*)/,
+    { // b^blendtime <time?>
+        match: /^b\^blendtime ?(\d*)/,
         action: require('./actions/blend_timeset.js'),
         filters: [
             // this command can be triggered via a webhook (so that the google sheet can reset the date)
@@ -61,30 +61,30 @@ let textRoutes = [
             ])
         ]
     },
-    { // b@daily <username>
-        match: /^b@daily (.+)/,
+    { // b^daily <username>
+        match: /^b\^daily (.+)/,
         action: require('./actions/blend_moddaily.js'),
         filters: [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
-    { // b@set <username> <value>
-        match: /^b@set +(.+) +(\d+)/,
+    { // b^set <username> <value>
+        match: /^b\^set +(.+) +(\d+)/,
         action: require('./actions/blend_modset.js'),
         filters: [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
-    { // b@timestamp <username> <stamp>
-        match: /^b@timestamp ?(.+?) (\d+)/,
+    { // b^timestamp <username> <stamp>
+        match: /^b\^timestamp ?(.+?) (\d+)/,
         action: require('./actions/blend_timestamp.js'),
         filters: [
             require('./filters/isBot.js')(false),
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
-    { // b@timestamp <username>
-        match: /^b@timestamp ?(.*)/,
+    { // b^timestamp <username>
+        match: /^b\^timestamp ?(.*)/,
         action: require('./actions/blend_timestamp.js'),
         filters: [
             require('./filters/isBot.js')(false),
@@ -107,24 +107,24 @@ let textRoutes = [
             require('./filters/isBot')(false)
         ]
     },
-    { // rdzip@inspect <url> [json]
-        match: /^rdzip@inspect +(.+?) ?(json)?$/,
+    { // rdzip^inspect <url> [json]
+        match: /^rdzip\^inspect +(.+?) ?(json)?$/,
         action: require('./actions/rdzip_inspect.js'),
         filters: [
             require('./filters/isBot.js')(false),
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
-    { // rdzip@blend <url>
-        match: /^rdzip@blend (.+)/,
+    { // rdzip^blend <url>
+        match: /^rdzip\^blend (.+)/,
         action: require('./actions/rdzip_blend.js'),
         filters: [
             require('./filters/isBot.js')(false),
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
-    { // rdzip@add <url>
-        match: /^rdzip@add (.+)/,
+    { // rdzip^add <url>
+        match: /^rdzip\^add (.+)/,
         action: require('./actions/rdzip_add.js'),
         filters: [
             require('./filters/isBot.js')(false),

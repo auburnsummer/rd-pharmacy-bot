@@ -11,24 +11,25 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/firestore": "^0.19.0",
-    "@types/node": "^10.12.18",
+    "@types/node": "^10.14.17",
     "big.js": "^5.2.2",
-    "bluebird": "^3.5.3",
-    "discord.js": "^11.4.2",
+    "bluebird": "^3.5.5",
+    "discord.js": "^11.5.1",
     "dotenv": "^6.2.0",
-    "express": "^4.16.4",
-    "fuse.js": "^3.3.0",
+    "express": "^4.17.1",
+    "fuse.js": "^3.4.5",
     "googleapis": "^42.0.0",
+    "grpc": "^1.23.3",
     "imgur": "^0.3.1",
     "json5": "github:auburnsummer/json5",
     "jszip": "^3.2.2",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "uuid": "^3.3.2",
+    "uuid": "^3.3.3",
     "uws": "^99.0.0",
-    "xregexp": "^4.2.0"
+    "xregexp": "^4.2.4"
   },
   "devDependencies": {
-    "@types/express": "^4.16.0"
+    "@types/express": "^4.17.1"
   }
 }

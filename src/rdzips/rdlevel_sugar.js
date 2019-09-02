@@ -129,3 +129,30 @@ E.makeEmbed = (level) => {
 
     return embed;
 }
+
+E.makeBlendEmbeds = (level) => {
+    let tags = level.tags.map( (t) => {return `**[${t}]**`}).join(", ");
+    let players = (level.single_player ? "1P " : "") + (level.two_player ? "2P" : "");
+
+    let datetime = new Date()
+
+    let topEmbed = new RichEmbed()
+    .setAuthor(`Daily Blend: ${datetime.toDateString()}`)
+    .addField('Level', `${level.artist} - ${level.song}`, true)
+    .addField('Creator', level.author, true)
+    .addField('Description', level.description, false)
+    .addField("Tags", tags, false)
+    .addField("Modes", players, true)
+    .addField("Download", `[Link](${level.download_url})`, true)
+    .setImage(level.preview_img)
+    .setColor('PURPLE');
+
+    let bottomEmbed = new RichEmbed()
+    .setAuthor('About the Daily Blend Café')
+    .setDescription(`
+The Daily Blend Café is like a book club for custom levels! Play the daily level and post your score (press shift-o after loading the level to enable detailed scoring), and leave a comment with what you liked about the level!
+`);
+
+    embeds = [topEmbed, bottomEmbed];
+    return embeds;
+}

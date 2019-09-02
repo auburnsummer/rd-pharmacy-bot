@@ -115,6 +115,14 @@ let textRoutes = [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
+    { // rdzip@blend <url>
+        match: /^rdzip@blend (.+)/,
+        action: require('./actions/rdzip_blend.js'),
+        filters: [
+            require('./filters/isBot.js')(false),
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    },
     { // rdzip@add <url>
         match: /^rdzip@add (.+)/,
         action: require('./actions/rdzip_add.js'),

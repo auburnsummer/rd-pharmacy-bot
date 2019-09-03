@@ -121,7 +121,12 @@ E.makeEmbed = (level) => {
     embed = new RichEmbed()
     .setAuthor(`${level.song} -- ${level.artist}`)
     .setTitle(`Level Creator: ${level.author}`)
-    .addField("Description", level.description, false)
+
+    if (level.description) {
+        topEmbed.addField('Description', level.description, false)
+    }
+
+    embed
     .addField("Tags", tags, false)
     .addField("Modes", players, true)
     .addField("Download", `[Link](${level.download_url})`, true)
@@ -140,7 +145,12 @@ E.makeBlendEmbeds = (level) => {
     .setAuthor(`Daily Blend: ${datetime.toDateString()}`)
     .addField('Level', `${level.artist} - ${level.song}`, true)
     .addField('Creator', level.author, true)
-    .addField('Description', level.description, false)
+
+    if (level.description) {
+        topEmbed.addField('Description', level.description, false)
+    }
+
+    topEmbed
     .addField("Tags", tags, false)
     .addField("Modes", players, true)
     .addField("Download", `[Link](${level.download_url})`, true)

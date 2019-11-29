@@ -10,8 +10,6 @@ let E = module.exports = {};
 // What we expect each entry in the datastore to have. (and their default values for autofill)
 const schema = {
     id: "0",
-    lastDrinkTimestamp: 1,
-    count: 0,
     rdzip_consent: true
 }
 
@@ -88,33 +86,4 @@ E.getProperty = async (userID, propertyName) => {
         // don't have to reread, if we filled it it will be the schema's value
         return schema[propertyName];
     }
-}
-
-E.lastBlendTime = () =>  {
-    return E.getExistingUser("METADATA")
-    .then ( (snapshot) => {
-        return snapshot.data().blendTimestamp;
-    })
-}
-
-E.setBlendTime = (newTime) => {
-    return E.updateUser("METADATA", {blendTimestamp: newTime});
-}
-
-E.drink = async (userID, timestampOfPost, bypassCheck=false) => {
-    let arr = await Promise.all([E.lastBlendTime(), E.getUser(userID)]);
-    let lastBlend = arr[0];
-    let user = arr[1];
-    let lastDrink = user.data().lastDrinkTimestamp;
-    // the timestamp they drank needs to be BEFORE the timestamp the blend was posted
-    // or in other words, if they've drank AFTER the blend timestamp, they've already drank today!
-    if (lastDrink > lastBlend && bypassCheck == false) {
-        return Promise.resolve(false);
-    }
-    // otherwise, they're good to drink!
-    let newData = {
-        count: user.data().count + 1,
-        lastDrinkTimestamp: timestampOfPost,
-    }
-    return E.updateUser(userID, newData);
 }

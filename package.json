@@ -21,7 +21,7 @@
     "googleapis": "^42.0.0",
     "grpc": "^1.23.3",
     "imgur": "^0.3.1",
-    "json5": "github:auburnsummer/json5",
+    "json5": "github:auburnsummer/json5#a88e82eeb570ce23a0eb109a64d95bcb59e8786b",
     "jszip": "^3.2.2",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",

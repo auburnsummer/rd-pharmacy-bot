@@ -1,4 +1,5 @@
 const S = require('./spreadsheet.js');
+const _ = require('lodash');
 
 E = module.exports = {};
 
@@ -72,6 +73,41 @@ E.updateLevel = async (url, intern) => {
     }
     if (targetIndex === undefined) {
         throw new Error("Could not find that url");
+    }
+}
+
+E.removeLevel = async (url) => {
+    console.log(url);
+    let sheet = await S();
+    let response = await sheet.spreadsheets.values.get({
+        spreadsheetId : process.env.SPREADSHEET_ID,
+        range :  'JSON!A1:A',
+        majorDimension: 'COLUMNS'
+    });
+
+    let corp = _.filter(_.map(response.data.values[0], (value, index) => {
+        try {
+            let res = JSON.parse(value);
+            return {
+                download_url : res.download_url,
+                index: index
+            }
+        }
+        catch {
+            console.log('blank!');
+            return false;
+        }
+    }));
+    let finder = _.find(corp, (r) => r.download_url === url);
+    console.log(finder);
+    if (finder) {
+        console.log('made it here!');
+        return sheet.spreadsheets.values.clear({
+            spreadsheetId : process.env.SPREADSHEET_ID,
+            range : `JSON!A${finder.index+1}`
+        });
+    } else {
+        return false;
     }
 }
 

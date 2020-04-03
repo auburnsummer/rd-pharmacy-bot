@@ -51,6 +51,16 @@ let textRoutes = [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
+    { // rdzip^remove <url>
+        match: /^rdzip\^remove (.+)/,
+        action: require('./actions/rdzip_remove.js'),
+        filters: [
+            require('./filters/or.js')([
+                require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES),
+                require('./filters/isWebhook.js')(false)
+            ])
+        ]
+    },
     { // submission.
         match: /[\w\W]*/, // everything
         action: require('./actions/rdzip_filesubmission'),

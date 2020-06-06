@@ -21,7 +21,7 @@ const schema = {
     preview_img: "MISSING",
     starred: false,
     star_reason: "",
-    approved: false
+    verified: false
 }
 
 // Given an object, fills out any missing items in the schema with their default levels.
@@ -65,7 +65,7 @@ E.getLevels = async () => {
     return processed
 }
 
-E.updateLevel = async (url, intern) => {
+E.updateLevel = async (url) => {
     let sheet = await S();
     let response = await sheet.spreadsheets.values.get({
         spreadsheetId : process.env.SPREADSHEET_ID,
@@ -78,6 +78,7 @@ E.updateLevel = async (url, intern) => {
             let res = JSON.parse(s);
             if (res.download_url === url) {
                 targetIndex = index;
+		console.log(res.verified);
             }
         } catch (error) {
             
@@ -86,6 +87,7 @@ E.updateLevel = async (url, intern) => {
     if (targetIndex === undefined) {
         throw new Error("Could not find that url");
     }
+
 }
 
 E.removeLevel = async (url) => {

@@ -6,7 +6,8 @@ const sheet = require('../sheets/sheet_json.js');
 
 
 module.exports = async (message, results) => {
-    console.log('inspect');
+    console.log('approve');
+    await sheet.updateLevel(results[1])
     let level;
     try {
         level = await sugar.makeInternFromURL(results[1]);
@@ -15,6 +16,4 @@ module.exports = async (message, results) => {
     }
     level = sheet.fillWithSchema(level)
 
-
-    return message.channel.send("```" + JSON.stringify(level, null, 1) + "```");
 } 

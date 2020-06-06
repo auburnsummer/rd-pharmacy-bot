@@ -20,7 +20,8 @@ const schema = {
     two_player: false,
     preview_img: "MISSING",
     starred: false,
-    star_reason: ""
+    star_reason: "",
+    approved: false
 }
 
 // Given an object, fills out any missing items in the schema with their default levels.

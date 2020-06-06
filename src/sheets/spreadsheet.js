@@ -13,6 +13,7 @@ module.exports = async () => {
         // Scopes can be specified either as an array or as a single, space-delimited string.
         scopes: ['https://www.googleapis.com/auth/spreadsheets']
     });
+    console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
     const authClient = await auth.getClient();
     const sheets = google.sheets({
         version: "v4",

@@ -65,32 +65,46 @@ E.getLevels = async () => {
     return processed
 }
 
-E.updateLevel = async (url) => {
+E.verifyLevel = async (url, toSet) => {
+    console.log("sanity");
     let sheet = await S();
     let response = await sheet.spreadsheets.values.get({
         spreadsheetId : process.env.SPREADSHEET_ID,
         range :  'JSON!A1:A',
         majorDimension: 'COLUMNS'
     });
+    ogresponse = response;
+    console.log("response data values");
+    // console.log(response.data.values);
     let targetIndex;
-    for ([index, s] of response.data.values[0]) {
+    let index = 0;
+    for (s of response.data.values[0]) {
         try {
             let res = JSON.parse(s);
             if (res.download_url === url) {
                 targetIndex = index;
 		console.log(res.verified);
+		res.verified=toSet;
+		response.data.values[0][index] = JSON.stringify(res);
             }
         } catch (error) {
             
         }
+        index++;
     }
     if (targetIndex === undefined) {
         throw new Error("Could not find that url");
     }
+    let finished = await sheet.spreadsheets.values.update({
+        spreadsheetId: process.env.SPREADSHEET_ID,
+        range:  'JSON!A1:A',
+	requestBody: ogresponse
+    });
+    
 
 }
 
-E.removeLevel = async (url) => {
+E.updateLevel = async (url) => {
     console.log(url);
     let sheet = await S();
     let response = await sheet.spreadsheets.values.get({
@@ -112,6 +126,43 @@ E.removeLevel = async (url) => {
             return false;
         }
     }));
+    let finder = _.find(corp, (r) => r.download_url === url);
+    console.log(finder);
+    if (finder) {
+        console.log('made it here!');
+        return sheet.spreadsheets.values.update({
+            spreadsheetId : process.env.SPREADSHEET_ID,
+            range : `JSON!A${finder.index+1}`
+        });
+    } else {
+        return false;
+    }
+}
+
+E.removeLevel = async (url) => {
+    console.log(url);
+    let sheet = await S();
+    let response = await sheet.spreadsheets.values.get({
+        spreadsheetId : process.env.SPREADSHEET_ID,
+        range :  'JSON!A1:A',
+        majorDimension: 'COLUMNS'
+    });
+
+    let corp = _.filter(_.map(response.data.values[0], (value, index) => {
+        try {
+            let res = JSON.parse(value);
+            return {
+                download_url : res.download_url,
+                index: index
+
+            }
+        }
+        catch {
+            console.log('blank!');
+            return false;
+        }
+    }));
+
     let finder = _.find(corp, (r) => r.download_url === url);
     console.log(finder);
     if (finder) {

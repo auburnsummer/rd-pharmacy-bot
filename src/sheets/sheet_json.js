@@ -36,6 +36,17 @@ let fillWithSchema = (obj) => {
     return obj;
 }
 
+E.fillWithSchema = (obj) => {
+    for (const [key, value] of Object.entries(schema)) {
+        if (obj.hasOwnProperty(key)) {
+            // do nothing
+        } else {
+            obj[key] = value;
+        }
+    }
+    return obj;
+}
+
 E.getLevels = async () => {
     let sheet = await S();
     let response = await sheet.spreadsheets.values.get({

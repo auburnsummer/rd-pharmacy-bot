@@ -2,6 +2,7 @@
 An action that handles the rdzip@inspect command. */
 
 const sugar = require('../rdzips/rdlevel_sugar.js');
+const sheet = require('../sheets/sheet_json.js');
 
 
 module.exports = async (message, results) => {
@@ -12,8 +13,8 @@ module.exports = async (message, results) => {
     } catch (error) {
         return message.channel.send(error);
     }
-    if (results[2] === 'json') {
-        return message.channel.send("```" + JSON.stringify(level, null, 1) + "```");
-    }
-    return message.channel.send(sugar.makeEmbed(level));
+    level = sheet.fillWithSchema(level)
+
+
+    return message.channel.send("```" + JSON.stringify(level, null, 1) + "```");
 } 

@@ -1,4 +1,4 @@
-/*
+﻿/*
 Handle the "action" of posting in rdzip-showcase
 */
 
@@ -30,6 +30,10 @@ module.exports = async (message, results) => {
         }
     }
     try {
+	if (require('../verified.js').includes(message.author.username)) {
+	level.verified=true
+	
+	}
         await rdsheet.addLevel(level);
     } catch (error) {
         let channel = client.channels.get(config.LOGGING_CHANNEL)
@@ -38,7 +42,7 @@ module.exports = async (message, results) => {
         }
     }
     return Promise.all([
-        request.post(process.env.SPREADSHEET_PING_URL),
+
         message.react('✅')
     ]);
 }

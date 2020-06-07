@@ -44,6 +44,14 @@ let textRoutes = [
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
         ]
     },
+    { // rdzip^unapprove <url> [json]
+        match: /^rdzip\^unapprove +(.+?) ?(json)?$/,
+        action: require('./actions/rdzip_unapprove.js'),
+        filters: [
+            require('./filters/isBot.js')(false),
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    },
     { // rdzip^blend <url>
         match: /^rdzip\^blend (.+)/,
         action: require('./actions/rdzip_blend.js'),

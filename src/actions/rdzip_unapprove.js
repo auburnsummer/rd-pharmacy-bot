@@ -14,7 +14,7 @@ module.exports = async (message, results) => {
     } catch (error) {
         return message.channel.send(error);
     }
-    level.verified = true;
+    level.verified = false;
     console.log('removing old level');
     console.log(level.download_url);
     rdsheet.removeLevel(level.download_url);
@@ -25,7 +25,5 @@ module.exports = async (message, results) => {
     ]);
     
 	
-    
-    
 
 } 

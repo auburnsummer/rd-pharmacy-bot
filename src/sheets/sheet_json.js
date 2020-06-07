@@ -65,44 +65,7 @@ E.getLevels = async () => {
     return processed
 }
 
-E.verifyLevel = async (url, toSet) => {
-    console.log("sanity");
-    let sheet = await S();
-    let response = await sheet.spreadsheets.values.get({
-        spreadsheetId : process.env.SPREADSHEET_ID,
-        range :  'JSON!A1:A',
-        majorDimension: 'COLUMNS'
-    });
-    ogresponse = response;
-    console.log("response data values");
-    // console.log(response.data.values);
-    let targetIndex;
-    let index = 0;
-    for (s of response.data.values[0]) {
-        try {
-            let res = JSON.parse(s);
-            if (res.download_url === url) {
-                targetIndex = index;
-		console.log(res.verified);
-		res.verified=toSet;
-		response.data.values[0][index] = JSON.stringify(res);
-            }
-        } catch (error) {
-            
-        }
-        index++;
-    }
-    if (targetIndex === undefined) {
-        throw new Error("Could not find that url");
-    }
-    let finished = await sheet.spreadsheets.values.update({
-        spreadsheetId: process.env.SPREADSHEET_ID,
-        range:  'JSON!A1:A',
-	requestBody: ogresponse
-    });
-    
 
-}
 
 E.updateLevel = async (url) => {
     console.log(url);

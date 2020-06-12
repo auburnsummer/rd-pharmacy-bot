@@ -20,11 +20,23 @@ const schema = {
     two_player: false,
     preview_img: "MISSING",
     starred: false,
-    star_reason: ""
+    star_reason: "",
+    verified: false
 }
 
 // Given an object, fills out any missing items in the schema with their default levels.
 let fillWithSchema = (obj) => {
+    for (const [key, value] of Object.entries(schema)) {
+        if (obj.hasOwnProperty(key)) {
+            // do nothing
+        } else {
+            obj[key] = value;
+        }
+    }
+    return obj;
+}
+
+E.fillWithSchema = (obj) => {
     for (const [key, value] of Object.entries(schema)) {
         if (obj.hasOwnProperty(key)) {
             // do nothing
@@ -53,30 +65,9 @@ E.getLevels = async () => {
     return processed
 }
 
-E.updateLevel = async (url, intern) => {
-    let sheet = await S();
-    let response = await sheet.spreadsheets.values.get({
-        spreadsheetId : process.env.SPREADSHEET_ID,
-        range :  'JSON!A1:A',
-        majorDimension: 'COLUMNS'
-    });
-    let targetIndex;
-    for ([index, s] of response.data.values[0]) {
-        try {
-            let res = JSON.parse(s);
-            if (res.download_url === url) {
-                targetIndex = index;
-            }
-        } catch (error) {
-            
-        }
-    }
-    if (targetIndex === undefined) {
-        throw new Error("Could not find that url");
-    }
-}
 
-E.removeLevel = async (url) => {
+
+E.updateLevel = async (url) => {
     console.log(url);
     let sheet = await S();
     let response = await sheet.spreadsheets.values.get({
@@ -98,6 +89,43 @@ E.removeLevel = async (url) => {
             return false;
         }
     }));
+    let finder = _.find(corp, (r) => r.download_url === url);
+    console.log(finder);
+    if (finder) {
+        console.log('made it here!');
+        return sheet.spreadsheets.values.update({
+            spreadsheetId : process.env.SPREADSHEET_ID,
+            range : `JSON!A${finder.index+1}`
+        });
+    } else {
+        return false;
+    }
+}
+
+E.removeLevel = async (url) => {
+    console.log(url);
+    let sheet = await S();
+    let response = await sheet.spreadsheets.values.get({
+        spreadsheetId : process.env.SPREADSHEET_ID,
+        range :  'JSON!A1:A',
+        majorDimension: 'COLUMNS'
+    });
+
+    let corp = _.filter(_.map(response.data.values[0], (value, index) => {
+        try {
+            let res = JSON.parse(value);
+            return {
+                download_url : res.download_url,
+                index: index
+
+            }
+        }
+        catch {
+            console.log('blank!');
+            return false;
+        }
+    }));
+
     let finder = _.find(corp, (r) => r.download_url === url);
     console.log(finder);
     if (finder) {

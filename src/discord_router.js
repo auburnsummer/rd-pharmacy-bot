@@ -11,6 +11,7 @@ const config = require('./config.js');
 const MODERATOR_ROLES = config.MODERATOR_ROLES;
 
 let textRoutes = [
+
     {
         // rdzip!version
         match: /^rdzip!version/,
@@ -30,6 +31,21 @@ let textRoutes = [
     { // rdzip^inspect <url> [json]
         match: /^rdzip\^inspect +(.+?) ?(json)?$/,
         action: require('./actions/rdzip_inspect.js'),
+        filters: [
+            require('./filters/isInAnyOfTheseChannels.js')([config.PHARMACY_CHANNEL])
+        ]
+    },
+    { // rdzip^approve <url> [json]
+        match: /^rdzip\^approve +(.+?) ?(json)?$/,
+        action: require('./actions/rdzip_approve.js'),
+        filters: [
+            require('./filters/isBot.js')(false),
+            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+        ]
+    },
+    { // rdzip^unapprove <url> [json]
+        match: /^rdzip\^unapprove +(.+?) ?(json)?$/,
+        action: require('./actions/rdzip_unapprove.js'),
         filters: [
             require('./filters/isBot.js')(false),
             require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
@@ -68,7 +84,6 @@ let textRoutes = [
             require('./filters/hasAFileAttachedWithThisExtension')('.rdzip'),
             require('./filters/isBot')(false),
             require('./filters/isInAnyOfTheseChannels')([config.SHOWCASE_CHANNEL]),
-            require('./filters/isOptedInToTheSpreadsheet')(true)
         ]
     }
 

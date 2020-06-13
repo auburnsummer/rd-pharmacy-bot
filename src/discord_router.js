@@ -32,7 +32,7 @@ let textRoutes = [
         match: /^rdzip\^inspect +(.+?) ?(json)?$/,
         action: require('./actions/rdzip_inspect.js'),
         filters: [
-            require('./filters/isInAnyOfTheseChannels.js')([config.PHARMACY_CHANNEL])
+            require('./filters/isInAnyOfTheseChannels.js')(config.PHARMACY_CHANNELS)
         ]
     },
     { // rdzip^approve <url> [json]

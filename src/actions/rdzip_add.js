@@ -14,10 +14,6 @@ module.exports = async (message, results) => {
     }
     console.log(level);
     try {
-	if (require('../verified.js').includes(message.author.username)) {
-	level.verified=true
-	
-	}
         await rdsheet.addLevel(level);
 
     } catch (error) {

@@ -32,23 +32,21 @@ let textRoutes = [
         match: /^rdzip\^inspect +(.+?) ?(json)?$/,
         action: require('./actions/rdzip_inspect.js'),
         filters: [
-            require('./filters/isInAnyOfTheseChannels.js')([config.PHARMACY_CHANNEL])
+            require('./filters/isInAnyOfTheseChannels.js')(config.PHARMACY_CHANNELS)
         ]
     },
     { // rdzip^approve <url> [json]
         match: /^rdzip\^approve +(.+?) ?(json)?$/,
         action: require('./actions/rdzip_approve.js'),
         filters: [
-            require('./filters/isBot.js')(false),
-            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+            require('./filters/isInAnyOfTheseChannels.js')(config.PHARMACY_CHANNELS)
         ]
     },
     { // rdzip^unapprove <url> [json]
         match: /^rdzip\^unapprove +(.+?) ?(json)?$/,
         action: require('./actions/rdzip_unapprove.js'),
         filters: [
-            require('./filters/isBot.js')(false),
-            require('./filters/hasAnyOfTheseRoles.js')(MODERATOR_ROLES)
+            require('./filters/isInAnyOfTheseChannels.js')(config.PHARMACY_CHANNELS)
         ]
     },
     { // rdzip^blend <url>

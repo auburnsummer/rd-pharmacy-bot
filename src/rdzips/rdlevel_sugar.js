@@ -129,6 +129,7 @@ E.makeEmbed = (level) => {
     embed
     .addField("Tags", tags, false)
     .addField("Modes", players, true)
+    .addField("Difficulty", level.difficulty, true)
     .addField("Download", `[Link](${level.download_url})`, true)
     .setImage(level.preview_img);
 
@@ -153,6 +154,7 @@ E.makeBlendEmbeds = (level) => {
     topEmbed
     .addField("Tags", tags, false)
     .addField("Modes", players, true)
+    .addField("Difficulty", level.difficulty, true)
     .addField("Download", `[Link](${level.download_url})`, true)
     .setImage(level.preview_img)
     .setColor('PURPLE');

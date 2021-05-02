@@ -75,6 +75,15 @@ let textRoutes = [
             ])
         ]
     },
+    { // rdlevel upload
+        match: /[\w\W]*/, // everything
+        action: require('./actions/rdzip_wupsrdlevel'),
+        filters: [
+            require('./filters/hasAFileAttachedWithThisExtension')('.rdlevel'),
+            require('./filters/isBot')(false),
+            require('./filters/isInAnyOfTheseChannels')([config.SHOWCASE_CHANNEL]),
+        ]
+    },
     { // submission.
         match: /[\w\W]*/, // everything
         action: require('./actions/rdzip_filesubmission'),

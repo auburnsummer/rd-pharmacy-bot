@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:11
+FROM node:alpine3.13
 
 COPY . /src
 

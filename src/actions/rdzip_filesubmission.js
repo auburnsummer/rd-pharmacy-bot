@@ -16,15 +16,15 @@ module.exports = async (message, results) => {
     // loop through attachments for a .rdzip
     let url;
     let level;
-    for (let n of message.attachments.array()) {
-        if (n.filename.toLowerCase().endsWith('.rdzip')) {
+    for (let n of message.attachments.values()) {
+        if (n.file.toLowerCase().endsWith('.rdzip')) {
             url = n.url;
         }
     }
     try {
         level = await sugar.makeInternFromURL(url);
     } catch (error) {
-        let channel = client.channels.get(config.LOGGING_CHANNEL)
+        let channel = await client.channels.fetch(config.LOGGING_CHANNEL)
         if (channel) {
             return channel.send("Error parsing rdzip : " + error);
         }
@@ -32,7 +32,7 @@ module.exports = async (message, results) => {
     try {
         await rdsheet.addLevel(level);
     } catch (error) {
-        let channel = client.channels.get(config.LOGGING_CHANNEL)
+        let channel = await client.channels.fetch(config.LOGGING_CHANNEL)
         if (channel) {
             return channel.send("Error uploading to sheet : " + error);
         }

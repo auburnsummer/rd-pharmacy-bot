@@ -7,7 +7,7 @@ let E = module.exports = {};
 
 const imgur = require('imgur');
 
-const { Client, RichEmbed } = require('discord.js');
+const { Client, MessageEmbed } = require('discord.js');
 const download = require('../utils/download.js');
 
 const Promise = require('bluebird');
@@ -118,12 +118,12 @@ E.makeEmbed = (level) => {
     let tags = level.tags.map( (t) => {return `**[${t}]**`}).join(", ");
     let players = (level.single_player ? "1P " : "") + (level.two_player ? "2P" : "");
 
-    embed = new RichEmbed()
+    embed = new MessageEmbed()
     .setAuthor(`${level.song} -- ${level.artist}`)
     .setTitle(`Level Creator: ${level.author}`)
 
     if (level.description) {
-        topEmbed.addField('Description', level.description, false)
+        embed.addField('Description', level.description, false)
     }
 
     embed
@@ -141,7 +141,7 @@ E.makeBlendEmbeds = (level) => {
 
     let datetime = new Date()
 
-    let topEmbed = new RichEmbed()
+    let topEmbed = new MessageEmbed()
     .setAuthor(`Daily Blend: ${datetime.toDateString()}`)
     .addField('Level', `${level.artist} - ${level.song}`, true)
     .addField('Creator', level.author, true)
@@ -157,7 +157,7 @@ E.makeBlendEmbeds = (level) => {
     .setImage(level.preview_img)
     .setColor('PURPLE');
 
-    let bottomEmbed = new RichEmbed()
+    let bottomEmbed = new MessageEmbed()
     .setAuthor('About the Daily Blend Café')
     .setDescription(`
 The Daily Blend Café is like a book club for custom levels! Play the daily level and post your score (press shift-o after loading the level to enable detailed scoring), and leave a comment with what you liked about the level!

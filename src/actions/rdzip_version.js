@@ -1,10 +1,10 @@
-const { Client, RichEmbed } = require('discord.js');
+const { Client, MessageEmbed } = require('discord.js');
 
 let VERSION = "v0.0.1";
 
 module.exports = (message, results) => {
-    let embed = new RichEmbed()
+    let embed = new MessageEmbed()
         .setAuthor("RDZip Bot Version")
         .setDescription(VERSION)
-    return message.channel.send(embed)
+    return message.channel.send({embeds: [embed]})
 }

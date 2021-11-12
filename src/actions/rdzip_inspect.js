@@ -15,5 +15,5 @@ module.exports = async (message, results) => {
     if (results[2] === 'json') {
         return message.channel.send("```" + JSON.stringify(level, null, 1) + "```");
     }
-    return message.channel.send(sugar.makeEmbed(level));
+    return message.channel.send({embeds: [sugar.makeEmbed(level)]});
 } 

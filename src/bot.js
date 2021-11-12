@@ -7,7 +7,7 @@ client.on('ready', () => {
     console.log("Ready.");
 })
 
-client.on('message', (message) => {
+client.on('messageCreate', (message) => {
     router.routeText(message)
     .catch( (err) => {
         console.log(err);

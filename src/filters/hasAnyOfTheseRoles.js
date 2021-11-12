@@ -3,8 +3,9 @@
 module.exports = (roles) => {
     let final = async (message) => {
         if (message.member) {
+            const keys = [...message.member.roles.cache.keys()];
             for (role of roles) {
-                if (message.member.roles.has(role)) {
+                if (keys.includes(role)) {
                     return true;
                 }
             }

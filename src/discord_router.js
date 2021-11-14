@@ -17,7 +17,7 @@ let textRoutes = [
         match: /^rdzip!version/,
         action: require('./actions/rdzip_version.js'),
         filters: [
-            require('./filters/isBot.js')(false)
+            require('./filters/isBot.js')(false),
         ]
     },
     {
@@ -81,7 +81,7 @@ let textRoutes = [
         filters: [
             require('./filters/hasAFileAttachedWithThisExtension')('.rdzip'),
             require('./filters/isBot')(false),
-            require('./filters/isInAnyOfTheseChannels')([config.SHOWCASE_CHANNEL]),
+            require('./filters/isInAnyOfTheseChannels')([config.SHOWCASE_CHANNEL, '362784581344034816']),
         ]
     }
 

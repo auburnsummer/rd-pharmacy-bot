@@ -14,13 +14,13 @@ const config = require('../config.js');
 module.exports = async (message, results) => {
     console.log("FILE SUBMISSION");
     // loop through attachments for a .rdzip
-    let url;
     let level;
-    for (let n of message.attachments.values()) {
-        if (n.file.toLowerCase().endsWith('.rdzip')) {
-            url = n.url;
-        }
+    let rdzip_attachment = message.attachments.find(v => v.name.toLowerCase().endsWith('.rdzip'));
+    let url;
+    if (rdzip_attachment) {
+        url = rdzip_attachment.url;
     }
+        
     try {
         level = await sugar.makeInternFromURL(url);
     } catch (error) {

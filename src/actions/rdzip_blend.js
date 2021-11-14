@@ -20,5 +20,5 @@ module.exports = async (message, results) => {
     } catch (error) {
         return message.channel.send(error);
     }
-    return hook.send("", {embeds: sugar.makeBlendEmbeds(level)});
+    return hook.send({embeds: sugar.makeBlendEmbeds(level)});
 } 

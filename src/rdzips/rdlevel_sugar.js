@@ -160,7 +160,7 @@ E.makeBlendEmbeds = (level) => {
     let bottomEmbed = new MessageEmbed()
     .setAuthor('About the Daily Blend Café')
     .setDescription(`
-The Daily Blend Café is like a book club for custom levels! Play the daily level and post your score (press shift-o after loading the level to enable detailed scoring), and leave a comment with what you liked about the level!
+The Daily Blend Café is like a book club for custom levels! Play the daily level and post your score (enable Detailed Level Results in Advanced Settings), and leave a comment with what you liked about the level!
 `);
 
     embeds = [topEmbed, bottomEmbed];

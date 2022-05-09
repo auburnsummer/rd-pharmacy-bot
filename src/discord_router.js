@@ -74,17 +74,7 @@ let textRoutes = [
                 require('./filters/isWebhook.js')(false)
             ])
         ]
-    },
-    { // submission.
-        match: /[\w\W]*/, // everything
-        action: require('./actions/rdzip_filesubmission'),
-        filters: [
-            require('./filters/hasAFileAttachedWithThisExtension')('.rdzip'),
-            require('./filters/isBot')(false),
-            require('./filters/isInAnyOfTheseChannels')([config.SHOWCASE_CHANNEL]),
-        ]
     }
-
 ]
 
 module.exports.routeText = async (message) => {

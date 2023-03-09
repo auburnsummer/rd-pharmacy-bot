@@ -6,7 +6,8 @@ E = module.exports = {};
         "296803054403977216",  // Doctor
         "775186322356437013",  // Paramedic
         "567946776766709781",  // Developer
-        "894572168426430474"   // Pharmacist
+        "894572168426430474",   // Pharmacist
+        "509133770117480456"   // KR Mods
     ];
     E.SHOWCASE_CHANNEL = "611380148431749151";
     E.PHARMACY_CHANNELS = [
